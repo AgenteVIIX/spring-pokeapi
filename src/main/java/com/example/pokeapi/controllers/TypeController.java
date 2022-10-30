@@ -1,5 +1,7 @@
 package com.example.pokeapi.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,12 +33,31 @@ public class TypeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update() {
-        return ResponseEntity.status(HttpStatus.OK).body("Acessando rota PUT");
+    public ResponseEntity<Object> update(@RequestBody TypeDTO typeDTO, @PathVariable Integer id) {
+        Optional<Type> typeExist = typeRepository.findById(id);
+
+        if(!typeExist.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tipo não encontrado");
+        }
+
+        Type type = typeExist.get();
+        BeanUtils.copyProperties(typeDTO, type);
+
+        return ResponseEntity.status(HttpStatus.OK).body(typeRepository.save(type));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete() {
-        return ResponseEntity.status(HttpStatus.OK).body("Acessando rota DELTE");
+    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+
+        Optional<Type> typeExist = typeRepository.findById(id);
+
+        if(!typeExist.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tipo não encontrado");
+        }
+
+        Type type = typeExist.get();
+        typeRepository.deleteById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Tipo " + type.getName() + " deletado com sucesso");
     }
 }

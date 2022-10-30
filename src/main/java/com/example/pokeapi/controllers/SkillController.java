@@ -1,5 +1,7 @@
 package com.example.pokeapi.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,12 +37,29 @@ public class SkillController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update() {
-        return ResponseEntity.status(HttpStatus.OK).body("Acessando rota PUT");
+    public ResponseEntity<Object> update(@PathVariable Integer id, @RequestBody SkillDTO skillDTO) {
+        Optional<Skill> skillExist = skillRepository.findById(id);
+
+        if(!skillExist.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill não encontrada");
+        }
+
+        Skill skill = skillExist.get();
+        BeanUtils.copyProperties(skillDTO, skill);
+        return ResponseEntity.status(HttpStatus.OK).body(skillRepository.save(skill));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete() {
-        return ResponseEntity.status(HttpStatus.OK).body("Acessando rota DELTE");
+    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+        Optional<Skill> skillExist = skillRepository.findById(id);
+
+        if(!skillExist.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill não encontrada");
+        }
+
+        Skill skill = skillExist.get();
+        skillRepository.deleteById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Skill " + skill.getName() + " deletada com sucesso");
     }
 }

@@ -1,5 +1,7 @@
 package com.example.pokeapi.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,13 +47,30 @@ public class PokemonController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body("Acessando rota PUT " + id);
+    public ResponseEntity<Object> update(@PathVariable Integer id, @RequestBody PokemonDTO pokemonDTO) {
+        Optional<Pokemon> pokemonExist = pokemonRepository.findById(id);
+
+        if(!pokemonExist.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pokemon não encontrado");
+        }
+
+        Pokemon pokemon = pokemonExist.get();
+        BeanUtils.copyProperties(pokemonDTO, pokemon);
+        return ResponseEntity.status(HttpStatus.OK).body(pokemonRepository.save(pokemon));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body("Acessando rota DELTE " + id);
+        Optional<Pokemon> pokemonExist = pokemonRepository.findById(id);
+
+        if(!pokemonExist.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Treinador não encontrado");
+        }
+
+        Pokemon pokemon = pokemonExist.get();
+        pokemonRepository.deleteById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Pokemon " + pokemon.getName() + " deletado com sucesso");
     }
 
     

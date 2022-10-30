@@ -1,5 +1,7 @@
 package com.example.pokeapi.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,12 +34,30 @@ public class WeaknessController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update() {
-        return ResponseEntity.status(HttpStatus.OK).body("Acessando rota PUT");
+    public ResponseEntity<Object> update(@PathVariable Integer id, @RequestBody WeaknessDTO weaknessDTO) {
+        Optional<Weakness> weaknessExist = weaknessRepository.findById(id);
+
+        if(!weaknessExist.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fraqueza não encontrada");
+        }
+
+        Weakness weakness = weaknessExist.get();
+        BeanUtils.copyProperties(weaknessDTO, weakness);
+
+        return ResponseEntity.status(HttpStatus.OK).body(weaknessRepository.save(weakness));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete() {
-        return ResponseEntity.status(HttpStatus.OK).body("Acessando rota DELTE");
+    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+        Optional<Weakness> weaknessExist = weaknessRepository.findById(id);
+
+        if(!weaknessExist.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fraqueza não encontrada");
+        }
+
+        Weakness weakness = weaknessExist.get();
+        weaknessRepository.deleteById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Fraqueza " + weakness.getName() + " Deletada com sucesso");
     }
 }
