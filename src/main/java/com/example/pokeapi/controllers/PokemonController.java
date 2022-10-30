@@ -64,7 +64,7 @@ public class PokemonController {
         Optional<Pokemon> pokemonExist = pokemonRepository.findById(id);
 
         if(!pokemonExist.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Treinador não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pokemon não encontrado");
         }
 
         Pokemon pokemon = pokemonExist.get();
