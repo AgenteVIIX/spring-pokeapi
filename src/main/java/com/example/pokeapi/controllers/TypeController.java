@@ -17,7 +17,7 @@ import com.example.pokeapi.models.repository.TypeRepository;
 public class TypeController {
 
     @Autowired
-    TypeRepository typeRepository;
+    public TypeRepository typeRepository;
 
     @GetMapping
     public ResponseEntity<Object> show() {

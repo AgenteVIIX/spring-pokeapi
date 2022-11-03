@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Entity
 public class Type {
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
 

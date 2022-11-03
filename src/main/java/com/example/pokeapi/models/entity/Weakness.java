@@ -14,7 +14,7 @@ import lombok.Setter;
 @Entity
 public class Weakness {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
 

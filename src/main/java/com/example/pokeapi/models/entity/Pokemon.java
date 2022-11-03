@@ -19,7 +19,7 @@ import javax.persistence.*;
 @Table(name = "pokemons")
 public class Pokemon {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
