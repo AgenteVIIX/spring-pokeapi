@@ -18,6 +18,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "pokemons")
 public class Pokemon {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -25,17 +26,23 @@ public class Pokemon {
     private String name;
     private Float weight;
     private Float height;
+    private String hp;
+    private String sp_attack;
+    private String sp_defense;
+    private String attack;
+    private String defense;
+    private String speed;
 
-    @OneToMany
-    @JoinColumn(name = "type_id")
+    @ManyToMany
+    @JoinTable(name = "pokemontype", joinColumns = @JoinColumn(name = "pokemon_id"), inverseJoinColumns = @JoinColumn(name = "type_id"))
     private List<Type> types;
 
-    @OneToMany
-    @JoinColumn(name = "skill_id")
+    @ManyToMany
+    @JoinTable(name = "pokemonskill", joinColumns = @JoinColumn(name = "pokemon_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills;
 
-    @OneToMany
-    @JoinColumn(name = "weakness_id")
+    @ManyToMany
+    @JoinTable(name = "pokemonweakness", joinColumns = @JoinColumn(name = "pokemon_id"), inverseJoinColumns = @JoinColumn(name = "weakness_id"))
     private List<Weakness> weaknesses;
     
 }

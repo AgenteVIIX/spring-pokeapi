@@ -24,7 +24,7 @@ public class Trainer {
     private String name;
     private Integer xp;
 
-    @OneToMany
+    @ManyToMany
     @JoinColumn(name = "pokemon_id")
     private List<Pokemon> pokemons;
 }

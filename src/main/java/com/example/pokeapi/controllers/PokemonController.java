@@ -2,6 +2,7 @@ package com.example.pokeapi.controllers;
 
 import java.util.Optional;
 
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,12 @@ public class PokemonController {
     public ResponseEntity<Object> showAll() {
         return ResponseEntity.status(HttpStatus.OK).body(pokemonRepository.findAll());
 
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> showById(@PathVariable Integer id) {
+        
+        return ResponseEntity.status(HttpStatus.OK).body(pokemonRepository.findById(id));
     }
 
     @PostMapping

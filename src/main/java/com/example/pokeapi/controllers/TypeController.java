@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.pokeapi.models.dto.TypeDTO;
 import com.example.pokeapi.models.entity.Type;
+import com.example.pokeapi.models.repository.PokemonRepository;
 import com.example.pokeapi.models.repository.TypeRepository;
 
 @RestController
@@ -19,9 +20,17 @@ public class TypeController {
     @Autowired
     public TypeRepository typeRepository;
 
+    @Autowired
+    public PokemonRepository pokemonRepository;
+
     @GetMapping
     public ResponseEntity<Object> show() {
         return ResponseEntity.status(HttpStatus.OK).body(typeRepository.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> showAllByType(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.OK).body(pokemonRepository.findByTypeId(id));
     }
 
     @PostMapping

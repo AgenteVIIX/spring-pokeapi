@@ -20,6 +20,12 @@ public class PokemonDTO {
     private String name;
     private Float weight;
     private Float height;
+    private String hp;
+    private String sp_attack;
+    private String sp_defense;
+    private String attack;
+    private String defense;
+    private String speed;
     private List<Type> types;
     private List<Skill> skills;
     private List<Weakness> weaknesses;
